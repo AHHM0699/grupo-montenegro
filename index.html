@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a365d">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Grupo Montenegro">
+    <link rel="apple-touch-icon" href="images/logo-holding.png">
+    <link rel="manifest" href="manifest.json">
+    <title>Grupo Montenegro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a365d 0%, #2d4a7c 50%, #1a365d 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header img {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            border-radius: 20px;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .header h1 {
+            color: #c9a227;
+            font-size: 1.5rem;
+            margin-top: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            text-decoration: none;
+            min-height: 140px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .card:active {
+            transform: scale(0.95);
+        }
+
+        .card img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .card span {
+            color: #1a365d;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .home-button {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: white;
+            border: 4px solid #c9a227;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        .home-button:active {
+            transform: translateX(-50%) scale(0.95);
+        }
+
+        .home-button img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        /* Para pantallas pequeñas */
+        @media (max-width: 360px) {
+            .grid {
+                gap: 15px;
+            }
+            .card {
+                padding: 15px;
+                min-height: 120px;
+            }
+            .card img {
+                width: 60px;
+                height: 60px;
+            }
+            .card span {
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Efecto de carga */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a365d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading img {
+            width: 120px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Pantalla de carga -->
+    <div class="loading" id="loading">
+        <img src="images/logo-holding.png" alt="Cargando...">
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <img src="images/logo-holding.png" alt="Grupo Montenegro">
+        <h1>GRUPO MONTENEGRO</h1>
+    </div>
+
+    <!-- Grid de aplicaciones -->
+    <div class="grid">
+        <a href="https://comercialliliana.galotcompany.com" class="card" target="_blank" rel="noopener">
+            <img src="images/logo-liliana.png" alt="Comercial Liliana">
+            <span>Comercial Liliana</span>
+        </a>
+
+        <a href="https://comercialodoncito.galotcompany.com" class="card" target="_blank" rel="noopener">
+            <img src="images/logo-odoncito.png" alt="Comercial Odoncito">
+            <span>Comercial Odoncito</span>
+        </a>
+
+        <a href="https://cheplast.comercialsge.com" class="card" target="_blank" rel="noopener">
+            <img src="images/logo-cheplas.png" alt="Che Plast">
+            <span>Che Plast</span>
+        </a>
+
+        <a href="http://192.168.1.17:3000" class="card" target="_blank" rel="noopener">
+            <img src="images/logo-entregas.png" alt="Entregas">
+            <span>Entregas</span>
+        </a>
+
+        <a href="https://ahhm0699.github.io/comercial-liliana" class="card" target="_blank" rel="noopener">
+            <img src="images/logo-pagina.png" alt="Pagina Web">
+            <span>Pagina Web</span>
+        </a>
+
+        <a href="https://ahhm0699.github.io/comercial-liliana/admin" class="card" target="_blank" rel="noopener">
+            <img src="images/logo-ajustes.png" alt="Ajustes">
+            <span>Ajustes</span>
+        </a>
+    </div>
+
+    <!-- Boton de inicio -->
+    <button class="home-button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <img src="images/logo-holding.png" alt="Inicio">
+    </button>
+
+    <script>
+        // Ocultar pantalla de carga
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loading').classList.add('hidden');
+            }, 500);
+        });
+
+        // Registrar Service Worker para PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(function(registration) {
+                    console.log('Service Worker registrado:', registration);
+                })
+                .catch(function(error) {
+                    console.log('Error al registrar Service Worker:', error);
+                });
+        }
+    </script>
+</body>
+</html>
