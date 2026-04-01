@@ -1,4 +1,4 @@
-const CACHE_NAME = 'grupo-montenegro-v2';
+const CACHE_NAME = 'grupo-montenegro-v3';
 const urlsToCache = [
     './',
     './index.html',
