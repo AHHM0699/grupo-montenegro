@@ -1,4 +1,4 @@
-const CACHE_NAME = 'grupo-montenegro-v5';
+const CACHE_NAME = 'grupo-montenegro-v6';
 const urlsToCache = [
     './',
     './index.html',
@@ -10,7 +10,8 @@ const urlsToCache = [
     './images/logo-entregas.png',
     './images/logo-programa-caja.png',
     './images/logo-promsg.png',
-    './images/logo-habitaciones.png'
+    './images/logo-habitaciones.png',
+    './images/logo-etiquetas.png'
 ];
 
 // Instalar Service Worker
