@@ -248,7 +248,16 @@
 
         // Registrar Service Worker para PWA
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
+            // Recargar una vez cuando entra una version nueva del menu
+            var teniaControlador = !!navigator.serviceWorker.controller;
+            var recargando = false;
+            navigator.serviceWorker.addEventListener('controllerchange', function() {
+                if (!teniaControlador || recargando) return;
+                recargando = true;
+                window.location.reload();
+            });
+
+            navigator.serviceWorker.register('service-worker.js', { updateViaCache: 'none' })
                 .then(function(registration) {
                     console.log('Service Worker registrado:', registration);
                 })

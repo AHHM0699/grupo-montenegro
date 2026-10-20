@@ -1,4 +1,4 @@
-const CACHE_NAME = 'grupo-montenegro-v6';
+const CACHE_NAME = 'grupo-montenegro-v7';
 const urlsToCache = [
     './',
     './index.html',
@@ -14,8 +14,9 @@ const urlsToCache = [
     './images/logo-etiquetas.png'
 ];
 
-// Instalar Service Worker
+// Instalar Service Worker (sin esperar a que se cierre la app)
 self.addEventListener('install', function(event) {
+    self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(function(cache) {
@@ -25,7 +26,7 @@ self.addEventListener('install', function(event) {
     );
 });
 
-// Activar Service Worker
+// Activar Service Worker y tomar control de las pestañas abiertas
 self.addEventListener('activate', function(event) {
     event.waitUntil(
         caches.keys().then(function(cacheNames) {
@@ -36,20 +37,29 @@ self.addEventListener('activate', function(event) {
                     return caches.delete(cacheName);
                 })
             );
+        }).then(function() {
+            return self.clients.claim();
         })
     );
 });
 
-// Interceptar peticiones
+// Interceptar peticiones: primero la red (para ver siempre lo último),
+// y la copia guardada solo si no hay conexión
 self.addEventListener('fetch', function(event) {
+    if (event.request.method !== 'GET') return;
     event.respondWith(
-        caches.match(event.request)
+        fetch(event.request)
             .then(function(response) {
-                if (response) {
-                    return response;
+                if (response.ok && new URL(event.request.url).origin === self.location.origin) {
+                    var copia = response.clone();
+                    caches.open(CACHE_NAME).then(function(cache) {
+                        cache.put(event.request, copia);
+                    });
                 }
-                return fetch(event.request);
-            }
-        )
+                return response;
+            })
+            .catch(function() {
+                return caches.match(event.request);
+            })
     );
 });
