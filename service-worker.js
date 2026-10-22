@@ -1,4 +1,4 @@
-const CACHE_NAME = 'grupo-montenegro-v7';
+const CACHE_NAME = 'grupo-montenegro-v8';
 const urlsToCache = [
     './',
     './index.html',
@@ -11,7 +11,8 @@ const urlsToCache = [
     './images/logo-programa-caja.png',
     './images/logo-promsg.png',
     './images/logo-habitaciones.png',
-    './images/logo-etiquetas.png'
+    './images/logo-etiquetas.png',
+    './images/logo-separaciones.png'
 ];
 
 // Instalar Service Worker (sin esperar a que se cierre la app)
