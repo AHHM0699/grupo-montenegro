@@ -1,4 +1,4 @@
-const CACHE_NAME = 'grupo-montenegro-v8';
+const CACHE_NAME = 'grupo-montenegro-v9';
 const urlsToCache = [
     './',
     './index.html',
@@ -9,7 +9,6 @@ const urlsToCache = [
     './images/logo-cheplas.png',
     './images/logo-entregas.png',
     './images/logo-programa-caja.png',
-    './images/logo-promsg.png',
     './images/logo-habitaciones.png',
     './images/logo-etiquetas.png',
     './images/logo-separaciones.png'
