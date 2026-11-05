@@ -1,4 +1,4 @@
-const CACHE_NAME = 'grupo-montenegro-v10';
+const CACHE_NAME = 'grupo-montenegro-v11';
 const urlsToCache = [
     './',
     './index.html',
@@ -11,7 +11,8 @@ const urlsToCache = [
     './images/logo-programa-caja.png',
     './images/logo-habitaciones.png',
     './images/logo-etiquetas.png',
-    './images/logo-separaciones.png'
+    './images/logo-separaciones.png',
+    './images/logo-asistencia.png'
 ];
 
 // Instalar Service Worker (sin esperar a que se cierre la app)
@@ -43,14 +44,33 @@ self.addEventListener('activate', function(event) {
     );
 });
 
-// Interceptar peticiones: primero la red (para ver siempre lo último),
-// y la copia guardada solo si no hay conexión
+// Interceptar peticiones:
+// - Imágenes: primero la copia guardada (carga instantánea) y se actualiza por detrás.
+// - Lo demás (la página): primero la red, para ver siempre lo último; la copia solo sin conexión.
 self.addEventListener('fetch', function(event) {
     if (event.request.method !== 'GET') return;
+    var url = new URL(event.request.url);
+    if (url.origin !== self.location.origin) return;   // enlaces a otros programas: no se tocan
+
+    if (event.request.destination === 'image') {
+        event.respondWith(
+            caches.open(CACHE_NAME).then(function(cache) {
+                return cache.match(event.request).then(function(guardada) {
+                    var deRed = fetch(event.request).then(function(response) {
+                        if (response.ok) cache.put(event.request, response.clone());
+                        return response;
+                    }).catch(function() { return guardada; });
+                    return guardada || deRed;
+                });
+            })
+        );
+        return;
+    }
+
     event.respondWith(
         fetch(event.request)
             .then(function(response) {
-                if (response.ok && new URL(event.request.url).origin === self.location.origin) {
+                if (response.ok) {
                     var copia = response.clone();
                     caches.open(CACHE_NAME).then(function(cache) {
                         cache.put(event.request, copia);

@@ -20,48 +20,63 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: linear-gradient(135deg, #1a365d 0%, #2d4a7c 50%, #1a365d 100%);
-            min-height: 100vh;
+            height: 100vh;          /* navegadores antiguos */
+            height: 100dvh;         /* alto real visible (sin barras del navegador) */
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
-            padding-bottom: 100px;
+            /* abajo: espacio para el botón redondo de inicio */
+            padding: calc(10px + env(safe-area-inset-top)) 16px calc(88px + env(safe-area-inset-bottom));
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 12px;
+            flex-shrink: 0;
         }
 
         .header img {
-            width: 150px;
-            height: 150px;
+            width: clamp(56px, 10dvh, 90px);
+            height: clamp(56px, 10dvh, 90px);
             object-fit: contain;
             border-radius: 20px;
             background: white;
-            padding: 10px;
+            padding: 6px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .header h1 {
             color: #c9a227;
-            font-size: 1.5rem;
-            margin-top: 15px;
+            font-size: 1.15rem;
+            margin-top: 6px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            /* 5 filas que se reparten el alto disponible: todo entra en una pantalla */
+            grid-auto-rows: minmax(0, 1fr);
+            gap: 10px;
             max-width: 400px;
             width: 100%;
+            flex: 1 1 0;
+            min-height: 0;
+            max-height: 640px;
+        }
+
+        /* La última tarjeta, si queda sola en su fila, va centrada */
+        .grid .card:last-child:nth-child(odd) {
+            grid-column: 1 / -1;
+            justify-self: center;
+            width: calc(50% - 5px);
         }
 
         .card {
             background: white;
-            border-radius: 20px;
-            padding: 20px;
+            border-radius: 16px;
+            padding: 6px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -70,7 +85,7 @@
             transition: all 0.3s ease;
             box-shadow: 0 5px 20px rgba(0,0,0,0.2);
             text-decoration: none;
-            min-height: 140px;
+            min-height: 0;
         }
 
         .card:hover {
@@ -83,10 +98,11 @@
         }
 
         .card img {
-            width: 80px;
-            height: 80px;
+            width: auto;
+            height: clamp(30px, 6.5dvh, 64px);
+            max-width: 80%;
             object-fit: contain;
-            margin-bottom: 10px;
+            margin-bottom: 4px;
         }
 
         .card span {
@@ -98,11 +114,11 @@
 
         .home-button {
             position: fixed;
-            bottom: 20px;
+            bottom: calc(12px + env(safe-area-inset-bottom));
             left: 50%;
             transform: translateX(-50%);
-            width: 70px;
-            height: 70px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             background: white;
             border: 4px solid #c9a227;
@@ -127,24 +143,6 @@
             width: 50px;
             height: 50px;
             object-fit: contain;
-        }
-
-        /* Para pantallas pequeñas */
-        @media (max-width: 360px) {
-            .grid {
-                gap: 15px;
-            }
-            .card {
-                padding: 15px;
-                min-height: 120px;
-            }
-            .card img {
-                width: 60px;
-                height: 60px;
-            }
-            .card span {
-                font-size: 0.75rem;
-            }
         }
 
         /* Efecto de carga */
@@ -231,6 +229,11 @@
             <img src="images/logo-separaciones.png" alt="Separaciones">
             <span>Separaciones</span>
         </a>
+
+        <a href="http://192.168.1.240:8095/admin" class="card" target="_blank" rel="noopener">
+            <img src="images/logo-asistencia.png" alt="Asistencia">
+            <span>Asistencia</span>
+        </a>
     </div>
 
     <!-- Boton de inicio -->
@@ -240,11 +243,11 @@
 
     <script>
         // Ocultar pantalla de carga
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.getElementById('loading').classList.add('hidden');
-            }, 500);
-        });
+        // (antes esperaba a que bajaran todas las imágenes; ahora se va apenas
+        //  la página está lista, y como máximo al segundo)
+        function ocultarCarga() { document.getElementById('loading').classList.add('hidden'); }
+        document.addEventListener('DOMContentLoaded', function() { setTimeout(ocultarCarga, 250); });
+        setTimeout(ocultarCarga, 1000);
 
         // Registrar Service Worker para PWA
         if ('serviceWorker' in navigator) {
