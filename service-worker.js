@@ -1,4 +1,4 @@
-const CACHE_NAME = 'grupo-montenegro-v13';
+const CACHE_NAME = 'grupo-montenegro-v14';
 const urlsToCache = [
     './',
     './index.html',
@@ -22,7 +22,7 @@ self.addEventListener('install', function(event) {
         caches.open(CACHE_NAME)
             .then(function(cache) {
                 console.log('Cache abierto');
-                return cache.addAll(urlsToCache);
+                return cache.addAll(urlsToCache.map(function(u){ return new Request(u, { cache: 'reload' }); }));
             })
     );
 });
